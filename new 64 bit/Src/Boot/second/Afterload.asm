@@ -159,6 +159,14 @@ notSupported:
 fallback:
 	jmp done
 
+SetVideoMode:
+
+
+
+
+
+	jmp $
+
 DAPACK:
 	db 0x10
 	db 0x00
