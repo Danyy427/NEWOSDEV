@@ -18,11 +18,15 @@ afterload:
 	call printStr
 	call printNewline
 
-
-
-
-
-
+	;TODO: Enable A20 Line
+	;TODO: Load Kernel to 0x10000
+	;TODO: Set Video Mode
+	;TOOD: Set GDT
+	;TODO: Go 32 Bit
+	;TODO: Set GDT64
+	;TODO: Set Paging
+	;TODO: Go 64 Bit
+	;TODO: Call kernel
 
 
 	jmp $
@@ -159,13 +163,175 @@ notSupported:
 fallback:
 	jmp done
 
-SetVideoMode:
+setVideoMode:
 
 
 
 
 
 	jmp $
+
+check_a20:
+    pushf
+    push ds
+    push es
+    push di
+    push si
+ 
+    cli
+ 
+    xor ax, ax ; ax = 0
+    mov es, ax
+ 
+    not ax ; ax = 0xFFFF
+    mov ds, ax
+ 
+    mov di, 0x0500
+    mov si, 0x0510
+ 
+    mov al, byte [es:di]
+    push ax
+ 
+    mov al, byte [ds:si]
+    push ax
+ 
+    mov byte [es:di], 0x00
+    mov byte [ds:si], 0xFF
+ 
+    cmp byte [es:di], 0xFF
+ 
+    pop ax
+    mov byte [ds:si], al
+ 
+    pop ax
+    mov byte [es:di], al
+ 
+    mov ax, 0
+    je check_a20__exit
+ 
+    mov ax, 1
+ 
+check_a20__exit:
+    pop si
+    pop di
+    pop es
+    pop ds
+    popf
+ 
+    ret
+
+enableA20:
+	pushf
+	pusha
+
+
+	call check_a20
+
+	cmp ax, 1
+	je enableA20_exit
+
+	mov     ax,2403h                ;--- A20-Gate Support ---
+	int     15h
+	jb      a20_ns                  ;INT 15h is not supported
+	cmp     ah,0
+	jnz     a20_ns                  ;INT 15h is not supported
+	
+	mov     ax,2402h                ;--- A20-Gate Status ---
+	int     15h
+	jb      a20_failed              ;couldn't get status
+	cmp     ah,0
+	jnz     a20_failed              ;couldn't get status
+	
+	cmp     al,1
+	jz      a20_activated           ;A20 is already activated
+	
+	mov     ax,2401h                ;--- A20-Gate Activate ---
+	int     15h
+	jb      a20_failed              ;couldn't activate the gate
+	cmp     ah,0
+	jnz     a20_failed              ;couldn't activate the gate
+	
+a20_activated:
+
+	call check_a20
+
+	cmp ax, 1
+	je enableA20_exit
+
+	cli	
+ 
+    call    a20wait
+    mov     al,0xAD
+    out     0x64,al
+ 
+    call    a20wait
+	mov     al,0xD0
+    out     0x64,al
+ 
+    call    a20wait2
+    in      al,0x60
+    push    eax
+ 
+    call    a20wait
+    mov     al,0xD1
+    out     0x64,al
+ 
+    call    a20wait
+    pop     eax
+    or      al,2
+    out     0x60,al
+ 
+    call    a20wait
+    mov     al,0xAE
+    out     0x64,al
+ 
+    call    a20wait
+    sti
+    
+	call check_a20
+
+	cmp ax, 1
+	je enableA20_exit
+ 
+	in al, 0x92
+	or al, 2
+	out 0x92, al
+
+
+enableA20_exit:
+	popa
+	popf
+	ret
+
+		
+a20wait:
+        in      al,0x64
+        test    al,2
+        jnz     a20wait
+        ret
+ 
+ 
+a20wait2:
+        in      al,0x64
+        test    al,1
+        jz      a20wait2
+        ret
+
+a20_ns:
+	mov bx, A20LineNTS
+	call printStr
+
+	call printNewline
+	
+	jmp a20_activated
+
+a20_failed:
+	mov bx, A20LineFailed
+	call printStr
+
+	call printNewline
+
+	jmp a20_activated
 
 DAPACK:
 	db 0x10
@@ -180,8 +346,8 @@ lba:	dd 0x00
 diskErrorStr: db "Error while loading the rest of the kernel", 0
 extensionsNotSupportedStr: db "INT 13 extensions not supported", 0
 Welcome: db "We reached the second stage", 0
-
-
+A20LineNTS: db "A20 Line for INT 15 is not supported", 0
+A20LineFailed: db "A20 Line failed on enable, INT 15", 0
 Drive: resb 1
 
 times 8192 - ($-$$) db 0
