@@ -52,7 +52,7 @@ bootload:
 	mov bp, sp
 
 	mov bx, Welcome
-	call printStr
+	call printStr	
 	call printNewline
 
 	mov cx, 16 ; block count

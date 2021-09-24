@@ -5,7 +5,7 @@ global boot
 
 ; Loads VBR and sets up the system
 
-boot:
+boot: ; 0x7c00
 
 	cld
 
@@ -14,6 +14,7 @@ boot:
 	mov ds, ax
 	mov gs, ax
 	mov fs, ax
+	
 	
 	mov cx, 0x0100   ; Move this mbr to 0x600
     mov si, 0x7C00            
@@ -181,6 +182,7 @@ notSupported:
 	jmp fallback
 
 fallback:
+	; TODO: ADD INT 0X13 AH 02
 	jmp done
 
 DAPACK: db	0x10
@@ -252,3 +254,6 @@ partition4:
 
 ; boot signature
 dw 0xAA55
+
+
+; 0x7C00
