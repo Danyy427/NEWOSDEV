@@ -683,17 +683,58 @@ a20_failed:
 
 	jmp a20_activated
 
+
+
 [BITS 32]
 
 code32:
 
+	mov ax, 0x10 ; data selector
+	mov es, ax
+	mov ds, ax
+	mov fs, ax
+	mov gs, ax
+	mov ss, ax
 
+	call isCPUIDAvailable
+	cmp eax, 0
+	je noCpuid
+
+	mov eax, 0x80000000    ; Set the A-register to 0x80000000.
+    cpuid                  ; CPU identification.
+    cmp eax, 0x80000001    ; Compare the A-register with 0x80000001.
+    jb .NoLongMode         ; It is less, there is no long mode.
+
+	mov eax, 0x80000001    ; Set the A-register to 0x80000001.
+    cpuid                  ; CPU identification.
+    test edx, 1 << 29      ; Test if the LM-bit, which is bit 29, is set in the D-register.
+    jz .NoLongMode         ; They aren't, there is no long mode.
 	;TODO: Set GDT64
 	;TODO: Set Paging
 	;TODO: Go 64 Bit
 	;TODO: Call kernel
 
 	jmp $
+
+noCpuid:
+
+	jmp $
+
+.NoLongMode:
+
+	jmp $
+
+isCPUIDAvailable:
+	pushfd                               ;Save EFLAGS
+    pushfd                               ;Store EFLAGS
+    xor dword [esp],0x00200000           ;Invert the ID bit in stored EFLAGS
+    popfd                                ;Load stored EFLAGS (with ID bit inverted)
+    pushfd                               ;Store EFLAGS again (ID bit may or may not be inverted)
+    pop eax                              ;eax = modified EFLAGS (ID bit may or may not be inverted)
+    xor eax,[esp]                        ;eax = whichever bits were changed
+    popfd                                ;Restore original EFLAGS
+    and eax,0x00200000                   ;eax = zero if ID bit can't be changed, else non-zero
+    ret
 
 
 DAPACK:
@@ -729,6 +770,44 @@ gdtr:
 	dw gdt_end - gdt - 1
 	dd gdt
 
+gdt64:
+gdt64_null: ; null descriptor is just empty
+	dd 0
+	dd 0
+gdt64_code:
+	dw 0xFFFF ; limit
+	dw 0x0000 ; base
+	db 0x00   ; base
+	db 0b10011010 ; access byte
+	db 0b10101111 ; flags and limit
+	db 0x0000 ; base
+gdt64_data:
+	dw 0xFFFF ; limit
+	dw 0x0000 ; base
+	db 0x00   ; base
+	db 0b10010010 ; access byte
+	db 0b10101111 ; flags and limit
+	db 0x0000 ; base
+gdt64_usercode:
+	dw 0xFFFF ; limit
+	dw 0x0000 ; base
+	db 0x00   ; base
+	db 0b11111010 ; access byte
+	db 0b10101111 ; flags and limit
+	db 0x0000 ; base
+gdt64_userdata:
+	dw 0xFFFF ; limit
+	dw 0x0000 ; base
+	db 0x00   ; base
+	db 0b11110010 ; access byte
+	db 0b10101111 ; flags and limit
+	db 0x0000 ; base
+gdt64_end:
+gdtr64:
+	dw gdt_end64 - gdt64 - 1
+	dq gdt64
+
+
 
 lbaLoop: resw 1
 segmLoop: resw 1
@@ -745,6 +824,8 @@ kernelLoadedOrTried: db "Kernel loaded (we tried atleast)", 0
 vbeblockfail: db "Could not get the vbe info block",0
 space: db " ",0
 videoModeNotFoundError: db "That video mode was not found try again", 0
+nocpuid: "CPUID is not available", 0
+
 
 vbeinfoblock: 
 	vbesign: db "VBE2"
