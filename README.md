@@ -24,7 +24,7 @@ Instructions:
   ---
   Mac:
   
-  Running this on mac is considerably easier. Download Homebrew: https://brew.sh/index_tr
+  Running this on mac is considerably easier. Download Homebrew: https://brew.sh/
   
   Open a terminal and type the following commands.
   
