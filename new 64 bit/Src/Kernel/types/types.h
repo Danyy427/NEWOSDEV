@@ -2,7 +2,7 @@
 #define _TYPES_H_
 
 typedef unsigned char uchar_t;
-typedef unsigned char uint16_t;
+typedef unsigned char uint8_t;
 
 typedef unsigned short ushort_t;
 typedef unsigned short uint16_t;
@@ -17,7 +17,7 @@ typedef unsigned long long ullong_t;
 typedef unsigned long long uint64_t;
 
 typedef signed char char_t;
-typedef signed char int16_t;
+typedef signed char int8_t;
 
 typedef signed short short_t;
 typedef signed short int16_t;
