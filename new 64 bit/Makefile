@@ -27,7 +27,7 @@ build: compile
 	qemu-system-x86_64 -monitor stdio $(BINDIR)/os-image.img
 	
 buildwin: compilewin 
-	copy /b "Bin\MBR.bin" + "Bin\Bootloader.bin" + "Bin\Afterload.bin" /b "Bin\boot.bin"
+	copy /b "$(BINDIR)\MBR.bin" + "$(BINDIR)\Bootloader.bin" + "$(BINDIR)\Afterload.bin" /b "$(BINDIR)\boot.bin"
 	ld -T link.ld -o $(BINDIR)\kernel.tmp Obj\kentry.o Obj\kmain.o
 	objcopy -O binary $(BINDIR)\kernel.tmp $(BINDIR)\kernel.bin
 	copy /b $(BINDIR)\boot.bin + $(BINDIR)\kernel.bin + $(BINDIR)\os-image.img
