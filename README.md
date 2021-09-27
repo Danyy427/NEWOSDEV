@@ -29,10 +29,15 @@ Instructions:
   Open a terminal and type the following commands.
   
  ```brew install nasm```
+ 
  ```brew install gcc``` (there is probably no need for this but just do it just to be sure)
+ 
  ```brew install make```
+ 
  ```brew install x86_64-elf-gcc```
+ 
  ```brew install x86_64-elf-binutils```
+ 
  ```brew install qemu```
  
  findutils are already a part of mac so that shouldn't be a problem.
