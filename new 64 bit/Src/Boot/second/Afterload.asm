@@ -20,7 +20,7 @@ global afterload
 ;	0x7c00 and growing downwards is our stack
 ;   0x9f00 e820 memory map location. This adress contains the number of entried in a dword
 ;	0x10000 to be loaded kernel image will be placed here
-;
+;   
 ;
 ;
 ;
@@ -690,38 +690,60 @@ a20_failed:
 code32:
 
 	mov ax, 0x10 ; data selector
-	mov es, ax
+	mov es, ax   ; reset all segments
 	mov ds, ax
 	mov fs, ax
 	mov gs, ax
 	mov ss, ax
 
-	call isCPUIDAvailable
-	cmp eax, 0
-	je noCpuid
+	call isCPUIDAvailable ; is cpuid available
+	cmp eax, 0            ; yes? no?
+	je noCpuid            ; no
+
+	mov eax, 0x0000
+	cpuid
+	mov dword [cpuManufacturer], ebx
+	mov dword [cpuManufacturer+0x04], edx
+	mov dword [cpuManufacturer+0x08], ecx
 
 	mov eax, 0x80000000    ; Set the A-register to 0x80000000.
     cpuid                  ; CPU identification.
     cmp eax, 0x80000001    ; Compare the A-register with 0x80000001.
-    jb .NoLongMode         ; It is less, there is no long mode.
+    jb NoLongMode         ; It is less, there is no long mode.
 
 	mov eax, 0x80000001    ; Set the A-register to 0x80000001.
     cpuid                  ; CPU identification.
     test edx, 1 << 29      ; Test if the LM-bit, which is bit 29, is set in the D-register.
-    jz .NoLongMode         ; They aren't, there is no long mode.
-	;TODO: Set GDT64
-	;TODO: Set Paging
+    jz NoLongMode         ; They aren't, there is no long mode.
+
+	; so now we know that we have longmode
+
+	call makePages
+
+	mov ecx, 0xC0000080          ; Set the C-register to 0xC0000080, which is the EFER MSR.
+    rdmsr                        ; Read from the model-specific register.
+    or eax, 1 << 8               ; Set the LM-bit which is the 9th bit (bit 8).
+    wrmsr                        ; Write to the model-specific register.
+
+	call enablePaging
+
+	lgdt [gdtr64] ; Set GDT64
+	
+	jmp 0x08:code64
 	;TODO: Go 64 Bit
 	;TODO: Call kernel
 
 	jmp $
 
 noCpuid:
-
+	; this is bad
+	; I thnink we die here
 	jmp $
 
-.NoLongMode:
-
+NoLongMode:
+	; TODO:
+	; yea... so if we dont have long mode we should just call a 32 bit kernel
+	; so write a 32 bit kernel for that
 	jmp $
 
 isCPUIDAvailable:
@@ -737,9 +759,75 @@ isCPUIDAvailable:
     ret
 
 
+; makes the paging structure at 0x1000
+makePages:
+	push eax
+	push ecx
+	push ebx
+	push edi
+
+	mov edi, 0x1000    ; Set the destination index to 0x1000.
+    mov cr3, edi       ; Set control register 3 to the destination index.
+    xor eax, eax       ; Nullify the A-register.
+    mov ecx, 4096      ; Set the C-register to 4096.
+    rep stosd          ; Clear the memory.
+    mov edi, cr3       ; Set the destination index to control register 3.
+
+	mov DWORD [edi], 0x2003      ; Set the uint32_t at the destination index to 0x2003.
+    add edi, 0x1000              ; Add 0x1000 to the destination index.
+    mov DWORD [edi], 0x3003      ; Set the uint32_t at the destination index to 0x3003.
+    add edi, 0x1000              ; Add 0x1000 to the destination index.
+    mov DWORD [edi], 0x4003      ; Set the uint32_t at the destination index to 0x4003.
+    add edi, 0x1000              ; Add 0x1000 to the destination index.	
+
+	mov ebx, 0x00000003          ; Set the B-register to 0x00000003.
+    mov ecx, 512                 ; Set the C-register to 512.
+ 
+.SetEntry:
+    mov DWORD [edi], ebx         ; Set the uint32_t at the destination index to the B-register.
+    add ebx, 0x1000              ; Add 0x1000 to the B-register.
+    add edi, 8                   ; Add eight to the destination index.
+    loop .SetEntry               ; Set the next entry.
+
+	 mov eax, cr4                 ; Set the A-register to control register 4.
+    or eax, 1 << 5               ; Set the PAE-bit, which is the 6th bit (bit 5).
+    mov cr4, eax                 ; Set control register 4 to the A-register.
+
+	pop edi
+	pop ebx
+	pop ecx
+	pop eax
+	ret
+
+enablePaging:
+	push eax
+	mov eax, cr0                 ; Set the A-register to control register 0.
+    or eax, 1 << 31 | 1 << 0     ; Set the PG-bit, which is the 31nd bit, and the PM-bit, which is the 0th bit.
+    mov cr0, eax                 ; Set control register 0 to the A-register.
+	pop eax
+	ret
+
+[BITS 64]
+
+code64:
+
+	mov ax, 0x10
+	mov es, ax
+	mov ds, ax
+	mov fs, ax
+	mov gs, ax
+	mov ss, ax
+	
+	
+	mov rdi, kernelInfoStruct
+	jmp 0x10000
+
+	jmp $
+
+
 DAPACK:
-	db 0x10
-	db 0x00
+	    db 0x10
+	    db 0x00
 blocc:	dw 0x00
 off:	dw 0x00
 segm:	dw 0x00
@@ -767,7 +855,7 @@ gdt_data:
 	db 0x0000 ; base
 gdt_end:
 gdtr:
-	dw gdt_end - gdt - 1
+	dw gdt_end - gdt - 1 
 	dd gdt
 
 gdt64:
@@ -804,8 +892,9 @@ gdt64_userdata:
 	db 0x0000 ; base
 gdt64_end:
 gdtr64:
-	dw gdt_end64 - gdt64 - 1
+	dw gdt64_end - gdt64 - 1
 	dq gdt64
+
 
 
 
@@ -824,7 +913,7 @@ kernelLoadedOrTried: db "Kernel loaded (we tried atleast)", 0
 vbeblockfail: db "Could not get the vbe info block",0
 space: db " ",0
 videoModeNotFoundError: db "That video mode was not found try again", 0
-nocpuid: "CPUID is not available", 0
+nocpuid: db "CPUID is not available", 0
 
 
 vbeinfoblock: 
@@ -848,7 +937,8 @@ VBEINFOFORKERNEL:
 	physicalFramebufferoffs: resw 1
 memoryMapLocation: 
 	mmap_ss: dw 0x9f00
-
+cpuInfo:
+	cpuManufacturer: resb 12
 
 times 8192 - ($-$$) db 0
 
