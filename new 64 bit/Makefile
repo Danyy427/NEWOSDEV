@@ -5,9 +5,11 @@ ASFLAGS_O := -felf64
 
 ifdef OS
    CC = gcc
+   FIND = gfind
 else
    ifeq ($(shell uname), Darwin)
       CC = x86_64-elf-gcc
+	  FIND = find
    endif
 endif
 
@@ -18,9 +20,9 @@ SRCDIR := Src
 BINDIR := Bin
 OBJDIR := Obj
 
-BOOTASM	= $(shell gfind $(SRCDIR)/Boot -name '*.asm')
-KERNELASM = $(shell gfind $(SRCDIR)/Kernel -name '*.asm')
-KERNELC = $(shell gfind $(SRCDIR)/Kernel -name '*.c')
+BOOTASM	= $(shell $(FIND) $(SRCDIR)/Boot -name '*.asm')
+KERNELASM = $(shell $(FIND) $(SRCDIR)/Kernel -name '*.asm')
+KERNELC = $(shell $(FIND) $(SRCDIR)/Kernel -name '*.c')
 
 BOOTBIN =  $(addsuffix .bin, $(basename $(notdir $(BOOTASM))))
 KERNELASMO = $(addsuffix .o, $(basename $(notdir $(KERNELASM))))
