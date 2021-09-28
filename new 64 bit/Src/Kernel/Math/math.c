@@ -11,9 +11,24 @@ int floor(double n)
     return (int)(n);
 }
 
+int min(int x, int y)
+{
+    return x < y ? x : y;
+}
+
+int max(int x, int y)
+{
+    return x > y ? y : x;
+}
+
 int sqrt(int n)
 {
-    return n * n;
+    int z = 1.0;
+    for (int i = 1; i <= 10; i++)
+    {
+        z -= (z * z - n) / (2 * z);
+    }
+    return z;
 }
 
 uint64_t pow(int n, unsigned int x)

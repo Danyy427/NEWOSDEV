@@ -1,6 +1,6 @@
+#include "kmain.h"
 
-
-int kmain()
+int kmain(kernelInfoStructure_t *infostruct)
 {
     while (1)
         ;
