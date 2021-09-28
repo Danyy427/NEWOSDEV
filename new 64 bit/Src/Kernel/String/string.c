@@ -56,43 +56,47 @@ uint32_t strncasecmp(char *dest, char *src, size_t n)
 
 char *strcat(char *dest, char *src)
 {
-    char tempstr[strlen(dest) + strlen(src)];
-    int j = 0;
-    for (int i = 0; i < strlen(dest); i++)
-    {
-        tempstr[i] = dest[i];
-        j++;
+    char* ptr = dest + strlen(dest);
+ 
+    // appends characters of the source to the destination string
+    while (*src != '\0') {
+        *ptr++ = *src++;
     }
-    for (int i = 0; i < strlen(src); i++)
-    {
-        tempstr[j + i] = dest[i];
-    }
-    dest = tempstr;
+ 
+    // null terminate destination string
+    *ptr = '\0';
+ 
+    // the destination is returned by standard `strcat()`
     return dest;
 }
 
 char *strncat(char *dest, char *src, size_t n)
 {
-    char tempstr[strlen(dest) + strlen(src)];
-    int j = 0;
-    for (int i = 0; i < strlen(dest); i++)
-    {
-        tempstr[i] = dest[i];
-        j++;
+    char* ptr = dest + strlen(dest);
+	int c = 0;
+    // appends characters of the source to the destination string
+    while (*src != '\0' && c < n) {
+        *ptr++ = *src++;
+		c++;
     }
-    for (int i = 0; i < (n > strlen(src) ? strlen(src) : n); i++)
-    {
-        tempstr[j + i] = dest[i];
-    }
-    dest = &tempstr[0];
+ 
+    // null terminate destination string
+    *ptr = '\0';
+ 
+    // the destination is returned by standard `strcat()`
     return dest;
 }
 
 char *strchr(char *dest, char chr)
 {
-    while (*dest++ != chr && *dest != '\0')
-        ;
-    return dest;
+    for (size_t i = 0; i < strlen(dest); i++)
+    {
+        if (dest[i] == chr)
+        {
+            return &dest[i];
+        }
+    }
+    return 0;
 }
 
 char *strnchr(char *dest, char chr, size_t n)
