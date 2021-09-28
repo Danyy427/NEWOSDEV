@@ -20,9 +20,9 @@ int max(int x, int y)
     return x > y ? y : x;
 }
 
-int sqrt(int n)
+double sqrt(double n)
 {
-    int z = 1.0;
+    double z = 1.0;
     for (int i = 1; i <= 10; i++)
     {
         z -= (z * z - n) / (2 * z);
@@ -48,4 +48,9 @@ uint64_t pow(int n, unsigned int x)
 uint64_t abs(int64_t n)
 {
     return n < 0 ? -n : n;
+}
+
+double hypot(double a, double b)
+{
+    return sqrt((a * a) + (b * b));
 }

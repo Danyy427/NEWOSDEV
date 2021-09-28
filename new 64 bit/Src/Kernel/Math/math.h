@@ -8,8 +8,10 @@ int floor(double n);
 int min(int x, int y);
 int max(int x, int y);
 
-int sqrt(int n);
+double sqrt(double n);
 uint64_t pow(int n, unsigned int x);
 uint64_t abs(int64_t n);
+
+double hypot(double a, double b);
 
 #endif

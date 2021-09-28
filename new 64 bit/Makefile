@@ -32,7 +32,7 @@ VPATH =  $(dir $(BOOTASM)) $(dir $(KERNELASM)) $(dir $(KERNELC))
 
 build: compile 
 	cat $(BINDIR)/MBR.bin $(BINDIR)/Bootloader.bin $(BINDIR)/Afterload.bin > $(BINDIR)/boot.bin
-	x86_64-elf-ld -T link.ld -o $(BINDIR)/kernel.tmp $(OBJDIR)/kentry.o $(OBJDIR)/kmain.o Obj/math.o
+	x86_64-elf-ld -T link.ld -o $(BINDIR)/kernel.tmp $(OBJDIR)/kentry.o $(OBJDIR)/kmain.o Obj/math.o Obj/string.o
 	x86_64-elf-objcopy -O binary $(BINDIR)/kernel.tmp $(BINDIR)/kernel.bin
 	cat $(BINDIR)/boot.bin $(BINDIR)/kernel.bin > $(BINDIR)/os-image.img
 	qemu-system-x86_64 -monitor stdio $(BINDIR)/os-image.img
@@ -40,7 +40,7 @@ build: compile
 buildwin: compile
 	
 	copy /b "$(BINDIR)\MBR.bin" + "$(BINDIR)\Bootloader.bin" + "$(BINDIR)\Afterload.bin" /b ".\$(BINDIR)\boot.bin"
-	ld -T link.ld -o $(BINDIR)\kernel.tmp $(OBJDIR)\kentry.o $(OBJDIR)\kmain.o $(OBJDIR)\math.o
+	ld -T link.ld -o $(BINDIR)\kernel.tmp $(OBJDIR)\kentry.o $(OBJDIR)\kmain.o $(OBJDIR)\math.o $(OBJDIR)\string.o
 	objcopy -O binary $(BINDIR)\kernel.tmp $(BINDIR)\kernel.bin
 	copy /b $(BINDIR)\boot.bin + $(BINDIR)\kernel.bin /b $(BINDIR)\os-image.img
 	qemu-system-x86_64 -monitor stdio $(BINDIR)\os-image.img
