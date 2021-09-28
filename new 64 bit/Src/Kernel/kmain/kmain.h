@@ -3,9 +3,10 @@
 
 #define OS TARAOS
 #define KERNEL
-#define OS BITS64
+#define OSARCH BITS64
 
-#include "../Math/math.c"
+#include "../Math/math.h"
+#include "../Types/types.h"
 
 typedef struct
 {

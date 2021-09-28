@@ -1,5 +1,4 @@
 #include "math.h"
-#include "../types/types.h"
 
 int ceil(double n)
 {

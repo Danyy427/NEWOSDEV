@@ -1,6 +1,8 @@
 #ifndef _MATH_H_
 #define _MATH_H_
 
+#include "../Types/types.h"
+
 int ceil(double n);
 int floor(double n);
 int min(int x, int y);

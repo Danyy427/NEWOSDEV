@@ -2,11 +2,14 @@ AS := nasm
 ASFLAGS_BIN := -fbin
 ASFLAGS_O := -felf64 
 
+
 ifdef OS
    CC = gcc
+   FIND = gfind
 else
    ifeq ($(shell uname), Darwin)
       CC = x86_64-elf-gcc
+	  FIND = find
    endif
 endif
 
@@ -16,9 +19,9 @@ SRCDIR := Src
 BINDIR := Bin
 OBJDIR := Obj
 
-BOOTASM	= $(shell gfind $(SRCDIR)/Boot -name '*.asm')
-KERNELASM = $(shell gfind $(SRCDIR)/Kernel -name '*.asm')
-KERNELC = $(shell gfind $(SRCDIR)/Kernel -name '*.c')
+BOOTASM	= $(shell $(FIND) $(SRCDIR)/Boot -name '*.asm')
+KERNELASM = $(shell $(FIND) $(SRCDIR)/Kernel -name '*.asm')
+KERNELC = $(shell $(FIND) $(SRCDIR)/Kernel -name '*.c')
 
 BOOTBIN =  $(addsuffix .bin, $(basename $(notdir $(BOOTASM))))
 KERNELASMO = $(addsuffix .o, $(basename $(notdir $(KERNELASM))))
@@ -28,8 +31,8 @@ KERNELCOW = $(addsuffix .o, $(basename $(notdir $(KERNELC))))
 VPATH =  $(dir $(BOOTASM)) $(dir $(KERNELASM)) $(dir $(KERNELC))
 
 build: compile 
-	cat Bin/MBR.bin Bin/Bootloader.bin Bin/Afterload.bin > Bin/boot.bin
-	x86_64-elf-ld -T link.ld -o $(BINDIR)/kernel.tmp Obj/kentry.o Obj/kmain.o Obj/math.o
+	cat $(BINDIR)/MBR.bin $(BINDIR)/Bootloader.bin $(BINDIR)/Afterload.bin > $(BINDIR)/boot.bin
+	x86_64-elf-ld -T link.ld -o $(BINDIR)/kernel.tmp $(OBJDIR)/kentry.o $(OBJDIR)/kmain.o Obj/math.o
 	x86_64-elf-objcopy -O binary $(BINDIR)/kernel.tmp $(BINDIR)/kernel.bin
 	cat $(BINDIR)/boot.bin $(BINDIR)/kernel.bin > $(BINDIR)/os-image.img
 	qemu-system-x86_64 -monitor stdio $(BINDIR)/os-image.img
@@ -37,7 +40,7 @@ build: compile
 buildwin: compile
 	
 	copy /b "$(BINDIR)\MBR.bin" + "$(BINDIR)\Bootloader.bin" + "$(BINDIR)\Afterload.bin" /b ".\$(BINDIR)\boot.bin"
-	ld -T link.ld -o $(BINDIR)\kernel.tmp Obj\kentry.o Obj\kmain.o Obj\math.o
+	ld -T link.ld -o $(BINDIR)\kernel.tmp $(OBJDIR)\kentry.o $(OBJDIR)\kmain.o $(OBJDIR)\math.o
 	objcopy -O binary $(BINDIR)\kernel.tmp $(BINDIR)\kernel.bin
 	copy /b $(BINDIR)\boot.bin + $(BINDIR)\kernel.bin /b $(BINDIR)\os-image.img
 	qemu-system-x86_64 -monitor stdio $(BINDIR)\os-image.img

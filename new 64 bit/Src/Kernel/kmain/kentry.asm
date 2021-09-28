@@ -7,6 +7,6 @@ extern kmain
 section .top_of_kernel
 
 kentry:
-
     call kmain
+    
     jmp $

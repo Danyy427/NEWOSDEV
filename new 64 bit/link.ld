@@ -1,5 +1,5 @@
 OUTPUT(ELF64-x86-64);
-ENTRY(_kentry)
+ENTRY(kentry)
 . = 0x10000;
 SECTIONS {
 	.top_of_kernel = 0x10000;
