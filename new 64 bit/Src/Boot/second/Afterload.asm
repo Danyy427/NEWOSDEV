@@ -936,7 +936,7 @@ VBEINFOFORKERNEL:
 	physicalFramebuffersegm: resw 1
 	physicalFramebufferoffs: resw 1
 memoryMapLocation: 
-	mmap_ss: dw 0x9f00
+	mmap_ss: dw 0x9f04
 cpuInfo:
 	cpuManufacturer: resb 12
 

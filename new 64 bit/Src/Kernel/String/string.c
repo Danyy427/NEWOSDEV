@@ -56,33 +56,35 @@ uint32_t strncasecmp(char *dest, char *src, size_t n)
 
 char *strcat(char *dest, char *src)
 {
-    char* ptr = dest + strlen(dest);
- 
+    char *ptr = dest + strlen(dest);
+
     // appends characters of the source to the destination string
-    while (*src != '\0') {
+    while (*src != '\0')
+    {
         *ptr++ = *src++;
     }
- 
+
     // null terminate destination string
     *ptr = '\0';
- 
+
     // the destination is returned by standard `strcat()`
     return dest;
 }
 
 char *strncat(char *dest, char *src, size_t n)
 {
-    char* ptr = dest + strlen(dest);
-	int c = 0;
+    char *ptr = dest + strlen(dest);
+    int c = 0;
     // appends characters of the source to the destination string
-    while (*src != '\0' && c < n) {
+    while (*src != '\0' && c < n)
+    {
         *ptr++ = *src++;
-		c++;
+        c++;
     }
- 
+
     // null terminate destination string
     *ptr = '\0';
- 
+
     // the destination is returned by standard `strcat()`
     return dest;
 }
@@ -181,4 +183,59 @@ char *strncpy(char *dest, const char *src, size_t n)
         dest[i] = '\0';
 
     return dest;
+}
+
+void memcpy(unsigned char *dest, const unsigned char *src, unsigned char len)
+{
+    const unsigned char *sp = (const unsigned char *)src;
+    unsigned char *dp = (unsigned char *)dest;
+    while (len--)
+    {
+        *dp++ = *sp++;
+    }
+}
+
+void memset(unsigned char *dest, unsigned char val, unsigned char len)
+{
+    unsigned char *temp = (unsigned char *)dest;
+    while (len--)
+    {
+        *temp++ = val;
+    }
+}
+
+void memmove(unsigned char *dest, unsigned char *src, unsigned char len)
+{
+    unsigned char *sp = (unsigned char *)src;
+    unsigned char *dp = (unsigned char *)dest;
+    if (dp < sp)
+    {
+        while (len--)
+        {
+            *dp++ = *sp++;
+        }
+    }
+    else
+    {
+        unsigned char *lasts = sp + (len - 1);
+        unsigned char *lastd = dp + (len - 1);
+        while (len--)
+        {
+            *lastd-- = *lasts--;
+        }
+    }
+}
+
+int memcmp(const unsigned char *src1, const unsigned char *src2, unsigned int len)
+{
+    const unsigned char *s1 = (const unsigned char *)src1;
+    const unsigned char *s2 = (const unsigned char *)src2;
+    while (len--)
+    {
+        if (*s1++ != *s2++)
+        {
+            return s1[-1] < s2[-1] ? -1 : 1;
+        }
+    }
+    return 0;
 }

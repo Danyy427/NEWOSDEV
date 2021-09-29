@@ -7,6 +7,9 @@
 
 #include "../Math/math.h"
 #include "../Types/types.h"
+#include "../String/string.h"
+#include "../Memory/memory.h"
+#include "../DataStructs/bitmap.h"
 
 typedef struct
 {
@@ -26,28 +29,4 @@ typedef struct
     uint8_t cpuName[12];
 } __attribute__((packed)) kernelInfoStructure_t;
 
-/*
-
-
-kernelInfoStruct:
-VBEINFOFORKERNEL:
-	bpsl: resw 1
-	width: resw 1
-	height: resw 1
-	bpp: resb 1	
-	rmasks: resb 1
-	rmaskp: resb 1
-	gmasks: resb 1
-	gmaskp: resb 1
-	bmasks: resb 1
-	bmaskp: resb 1
-	physicalFramebuffersegm: resw 1
-	physicalFramebufferoffs: resw 1
-memoryMapLocation: 
-	mmap_ss: dw 0x9f00
-cpuInfo:
-	cpuManufacturer: resb 12
-
-
-*/
 #endif

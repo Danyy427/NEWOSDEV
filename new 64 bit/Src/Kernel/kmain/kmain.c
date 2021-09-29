@@ -2,12 +2,11 @@
 
 int kmain(kernelInfoStructure_t *infostruct)
 {
-	char * str1 = "Hello world";
-	char * str2 = "world";
-	char * sss = strcat(str1, str2);
-	unsigned char * ww = 0x1f000;
-	*ww = *(sss+11);
-    while (1)
-        ;
-    return 0;
+	uint64_t memory = getSystemMemory((memoryMap_t *)infostruct->memoryMap);
+	uint64_t *ww = 0x1f000;
+	*ww = memory;
+
+	while (1)
+		;
+	return 0;
 }
