@@ -36,4 +36,6 @@ typedef unsigned int size_t;
 typedef unsigned int *ptr32_t;
 typedef unsigned long long *ptr64_t;
 
+typedef void *voidptr_t;
+
 #endif
