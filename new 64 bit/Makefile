@@ -30,7 +30,7 @@ KERNELCO = $(addsuffix .o, $(basename $(notdir $(KERNELC))))
 VPATH =  $(dir $(BOOTASM)) $(dir $(KERNELASM)) $(dir $(KERNELC))
 
 build: compile 
-	cat $(BINDIR)/MBR.bin $(BINDIR)/Bootloader.bin $(BINDIR)/Afterload.bin > $(BINDIR)/boot.bin
+	cat $(BINDIR)/MBR.bin $(BINDIR)/Bootloader.bin $(BINDIR)/Afterload.bin > Bin/boot.bin
 	x86_64-elf-ld -T link.ld -o $(BINDIR)/kernel.tmp $(OBJDIR)/kentry.o \
 										  			 $(OBJDIR)/kmain.o \
 										 			 $(OBJDIR)/math.o \
