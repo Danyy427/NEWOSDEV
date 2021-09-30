@@ -1,15 +1,17 @@
+
 #include "bitmap.h"
+
 #define INDEX_FROM_BIT(a) (a / (8 * 8))
 #define OFFSET_FROM_BIT(a) (a % (8 * 8))
 
-int getBitmap(bitmap_t bitmap, unsigned long index)
+int bitmapGet(bitmap_t bitmap, unsigned long index)
 {
     unsigned long idx = INDEX_FROM_BIT(index);
     unsigned long off = OFFSET_FROM_BIT(index);
     return (bitmap.buffer[idx] & (0x1 << off));
 }
 
-void setBitmap(bitmap_t bitmap, unsigned long index, int value)
+void bitmapSet(bitmap_t bitmap, unsigned long index, int value)
 {
 
     unsigned long idx = INDEX_FROM_BIT(index);
@@ -25,7 +27,7 @@ void setBitmap(bitmap_t bitmap, unsigned long index, int value)
     }
 }
 
-unsigned long bitmapFirstZeroBit(bitmap_t bitmap)
+uint64_t bitmapFirstZeriBit(bitmap_t bitmap)
 {
     unsigned int i, j;
     for (i = 0; i < bitmap.size; i++)

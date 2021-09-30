@@ -36,7 +36,8 @@ build: compile
 										 			 $(OBJDIR)/math.o \
 										 			 $(OBJDIR)/string.o \
 										 			 $(OBJDIR)/memory.o \
-													 $(OBJDIR)/bitmap.o 
+													 $(OBJDIR)/bitmap.o \
+													 $(OBJDIR)/pmm.o
 
 	x86_64-elf-objcopy -O binary $(BINDIR)/kernel.tmp $(BINDIR)/kernel.bin
 	cat $(BINDIR)/boot.bin $(BINDIR)/kernel.bin > $(BINDIR)/os-image.img
@@ -50,7 +51,8 @@ buildwin: compile
 										  $(OBJDIR)\math.o \
 										  $(OBJDIR)\string.o \
 										  $(OBJDIR)\memory.o \
-										  $(OBJDIR)\bitmap.o
+										  $(OBJDIR)\bitmap.o \
+										  $(OBJDIR)/pmm.o
 
 	objcopy -O binary $(BINDIR)\kernel.tmp $(BINDIR)\kernel.bin
 	copy /b $(BINDIR)\boot.bin + $(BINDIR)\kernel.bin /b $(BINDIR)\os-image.img

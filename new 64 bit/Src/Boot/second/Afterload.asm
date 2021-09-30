@@ -192,6 +192,7 @@ kloopError:
 
 	call printNewline
 
+	mov word [kernelSize], cx
 	mov bx, cx
 	call printHexWord
 
@@ -937,6 +938,8 @@ VBEINFOFORKERNEL:
 	physicalFramebufferoffs: resw 1
 memoryMapLocation: 
 	mmap_ss: dw 0x9f04
+kernelSize:
+	resw 1
 cpuInfo:
 	cpuManufacturer: resb 12
 

@@ -2,7 +2,10 @@
 
 int kmain(kernelInfoStructure_t *infostruct)
 {
-	uint64_t memory = getSystemMemory((memoryMap_t *)infostruct->memoryMap);
+
+	initMemoryMap((memoryMap_t *)infostruct->memoryMap);
+	initPhysicalPageFrameAllocation(infostruct->kernelSize);
+	uint64_t memory = RequestPhysicalPage();
 	uint64_t *ww = 0x1f000;
 	*ww = memory;
 

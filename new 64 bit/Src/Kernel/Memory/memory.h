@@ -17,6 +17,12 @@ typedef struct
     memoryEntry_t *entries;
 } __attribute__((packed)) memoryMap_t;
 
-uint64_t getSystemMemory(uint16_t memoryMap);
+static uint16_t memoryMapFirstEntry;
+
+uint64_t getSystemMemory();
+
+uint64_t getUsableSystemMemory();
+
+uint32_t isMemoryEntryUsable(memoryEntry_t *entry);
 
 #endif

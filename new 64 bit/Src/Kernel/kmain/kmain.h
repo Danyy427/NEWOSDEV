@@ -9,7 +9,7 @@
 #include "../Types/types.h"
 #include "../String/string.h"
 #include "../Memory/memory.h"
-#include "../DataStructs/bitmap.h"
+#include "../Memory/pmm/pmm.h"
 
 typedef struct
 {
@@ -26,6 +26,7 @@ typedef struct
     uint16_t framebuffersegm;
     uint16_t framebufferoff;
     uint16_t memoryMap;
+    uint16_t kernelSize;
     uint8_t cpuName[12];
 } __attribute__((packed)) kernelInfoStructure_t;
 
