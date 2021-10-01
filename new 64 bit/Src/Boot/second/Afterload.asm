@@ -821,6 +821,7 @@ code64:
 	
 	
 	mov rdi, kernelInfoStruct
+	mov rcx, kernelInfoStruct
 	jmp 0x10000
 
 	jmp $

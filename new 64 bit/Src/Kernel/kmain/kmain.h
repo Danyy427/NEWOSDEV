@@ -10,6 +10,7 @@
 #include "../String/string.h"
 #include "../Memory/memory.h"
 #include "../Memory/pmm/pmm.h"
+#include "../GDT/gdt.h"
 
 typedef struct
 {

@@ -13,7 +13,7 @@ else
    endif
 endif
 
-CCFLAGS := -mno-ms-bitfields -fno-PIC -m64 -ffreestanding -c -fno-stack-check -fno-stack-protector -mno-stack-arg-probe
+CCFLAGS := -mno-ms-bitfields -fno-PIC -m64 -mabi=sysv -ffreestanding -c -fno-stack-check -fno-stack-protector -mno-stack-arg-probe
 
 SRCDIR := Src
 BINDIR := Bin
@@ -37,7 +37,9 @@ build: compile
 										 			 $(OBJDIR)/string.o \
 										 			 $(OBJDIR)/memory.o \
 													 $(OBJDIR)/bitmap.o \
-													 $(OBJDIR)/pmm.o
+													 $(OBJDIR)/pmm.o \
+													 $(OBJDIR)/gdtasm.o \
+													 $(OBJDIR)/gdt.o
 
 	x86_64-elf-objcopy -O binary $(BINDIR)/kernel.tmp $(BINDIR)/kernel.bin
 	cat $(BINDIR)/boot.bin $(BINDIR)/kernel.bin > $(BINDIR)/os-image.img
@@ -52,7 +54,9 @@ buildwin: compile
 										  $(OBJDIR)\string.o \
 										  $(OBJDIR)\memory.o \
 										  $(OBJDIR)\bitmap.o \
-										  $(OBJDIR)/pmm.o
+										  $(OBJDIR)\pmm.o \
+										  $(OBJDIR)\gdtasm.o \
+										  $(OBJDIR)\gdt.o
 
 	objcopy -O binary $(BINDIR)\kernel.tmp $(BINDIR)\kernel.bin
 	copy /b $(BINDIR)\boot.bin + $(BINDIR)\kernel.bin /b $(BINDIR)\os-image.img
