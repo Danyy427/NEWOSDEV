@@ -439,10 +439,8 @@ getModeInfo:
 	mov byte [bmasks], al
 	mov al, byte [modeinfoblock+0x24]
 	mov byte [bmaskp], al
-	mov ax, word [modeinfoblock+0x28]
-	mov [physicalFramebuffersegm], ax
-	mov ax,word [modeinfoblock+0x2A]
-	mov [physicalFramebufferoffs], ax
+	mov eax, dword [modeinfoblock+0x28]
+	mov [physicalFramebuffer], eax
 
 
 	popa
@@ -935,8 +933,7 @@ VBEINFOFORKERNEL:
 	gmaskp: resb 1
 	bmasks: resb 1
 	bmaskp: resb 1
-	physicalFramebuffersegm: resw 1
-	physicalFramebufferoffs: resw 1
+	physicalFramebuffer: resd 1
 memoryMapLocation: 
 	mmap_ss: dw 0x9f04
 kernelSize:

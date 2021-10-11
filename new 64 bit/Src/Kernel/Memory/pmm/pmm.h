@@ -2,7 +2,6 @@
 #define _PMM_H_
 
 #include "../../Types/types.h"
-
 #include "../../DataStructs/bitmap.h"
 
 typedef struct
@@ -10,8 +9,8 @@ typedef struct
     uint64_t base_addr;
 } __attribute__((packed)) physicalPageFrame;
 
-static bitmap_t physicalPageBitmap;
-static uint32_t isPhysicalPageFrameAllocationInitialized;
+extern bitmap_t physicalPageBitmap;
+extern uint32_t isPhysicalPageFrameAllocationInitialized;
 
 void initPhysicalPageFrameAllocation(uint64_t kernelSize);
 

@@ -1,6 +1,9 @@
 #include "pmm.h"
 #include "../memory.h"
 
+bitmap_t physicalPageBitmap;
+uint32_t isPhysicalPageFrameAllocationInitialized;
+
 void initPhysicalPageFrameAllocation(uint64_t kernelSize)
 {
     physicalPageBitmap.buffer = 0x10000 + (kernelSize * 512) + 0x100;

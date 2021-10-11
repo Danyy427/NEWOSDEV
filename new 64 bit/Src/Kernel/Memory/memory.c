@@ -1,6 +1,8 @@
 
 #include "memory.h"
 
+uint16_t memoryMapFirstEntry;
+
 void initMemoryMap(uint16_t firstEntry)
 {
     memoryMapFirstEntry = firstEntry;

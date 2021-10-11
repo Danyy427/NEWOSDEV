@@ -17,7 +17,7 @@ typedef struct
     memoryEntry_t *entries;
 } __attribute__((packed)) memoryMap_t;
 
-static uint16_t memoryMapFirstEntry;
+extern uint16_t memoryMapFirstEntry;
 
 uint64_t getSystemMemory();
 

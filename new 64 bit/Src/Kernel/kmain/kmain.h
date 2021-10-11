@@ -5,12 +5,7 @@
 #define KERNEL
 #define OSARCH BITS64
 
-#include "../Math/math.h"
 #include "../Types/types.h"
-#include "../String/string.h"
-#include "../Memory/memory.h"
-#include "../Memory/pmm/pmm.h"
-#include "../GDT/gdt.h"
 
 typedef struct
 {
@@ -24,11 +19,30 @@ typedef struct
     uint8_t gmaskp;
     uint8_t bmasks;
     uint8_t bmaskp;
-    uint16_t framebuffersegm;
-    uint16_t framebufferoff;
+    uint32_t framebuffer;
     uint16_t memoryMap;
     uint16_t kernelSize;
     uint8_t cpuName[12];
 } __attribute__((packed)) kernelInfoStructure_t;
 
+extern kernelInfoStructure_t kernelInfo;
+
 #endif
+
+/*
+
+
+Annen sj zbab ivjjj 31 kernal anan -NPX
+
+
+if(entrysize>6 inch){
+
+    get.pregnant_anan;
+
+}
+
+else{
+    visit info@sjzbab3169.com
+}
+
+*/
