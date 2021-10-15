@@ -29,6 +29,7 @@ void initPaging()
     }
 
     loadCurrentPML4(kernelPML4);
+
     setAsCurrentPML4(kernelPML4);
 }
 
@@ -37,10 +38,10 @@ void mapPhysicalToVirtualAddr(PML4_t *pml4, uint64_t paddr, uint64_t vaddr, uint
 
     // Make sure that both addresses are page-aligned.
 
-    unsigned int pdindex;
-    unsigned int ptindex;
-    unsigned int pdptindex;
-    unsigned int pml4index;
+    uint64_t pdindex;
+    uint64_t ptindex;
+    uint64_t pdptindex;
+    uint64_t pml4index;
 
     vaddr >>= 12;
     ptindex = vaddr & 0x1ff;
@@ -134,7 +135,7 @@ uint64_t getPhysicalAddress(PML4_t *pml4, uint64_t vaddr)
     return (pt->entries[ptindex].address);
 }
 
-void __native_flush_tlb_single(unsigned int addr)
+void __native_flush_tlb_single(uint64_t addr)
 {
     asm volatile("invlpg (%0)" ::"r"(addr)
                  : "memory");

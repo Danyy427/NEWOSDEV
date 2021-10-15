@@ -31,7 +31,7 @@ typedef signed long long32_t;
 typedef signed long long llong_t;
 typedef signed long long int64_t;
 
-typedef unsigned int size_t;
+typedef unsigned long long size_t;
 
 typedef unsigned int *ptr32_t;
 typedef unsigned long long *ptr64_t;

@@ -35,12 +35,12 @@ char *strcpy(char *dest, const char *src);
 
 char *strncpy(char *dest, const char *src, size_t n);
 
-void memcpy(unsigned char *dest, const unsigned char *src, unsigned char len);
+void memcpy(unsigned char *dest, const unsigned char *src, uint64_t len);
 
-void memset(unsigned char *dest, unsigned char val, unsigned char len);
+void memset(unsigned char *dest, unsigned char val, uint64_t len);
 
-void memmove(unsigned char *dest, unsigned char *src, unsigned char len);
+void memmove(unsigned char *dest, unsigned char *src, uint64_t len);
 
-int memcmp(const unsigned char *src1, const unsigned char *src2, unsigned int len);
+int memcmp(const unsigned char *src1, const unsigned char *src2, uint64_t len);
 
 #endif

@@ -185,7 +185,7 @@ char *strncpy(char *dest, const char *src, size_t n)
     return dest;
 }
 
-void memcpy(unsigned char *dest, const unsigned char *src, unsigned char len)
+void memcpy(unsigned char *dest, const unsigned char *src, uint64_t len)
 {
     const unsigned char *sp = (const unsigned char *)src;
     unsigned char *dp = (unsigned char *)dest;
@@ -195,7 +195,7 @@ void memcpy(unsigned char *dest, const unsigned char *src, unsigned char len)
     }
 }
 
-void memset(unsigned char *dest, unsigned char val, unsigned char len)
+void memset(unsigned char *dest, unsigned char val, uint64_t len)
 {
     unsigned char *temp = (unsigned char *)dest;
     while (len--)
@@ -204,7 +204,7 @@ void memset(unsigned char *dest, unsigned char val, unsigned char len)
     }
 }
 
-void memmove(unsigned char *dest, unsigned char *src, unsigned char len)
+void memmove(unsigned char *dest, unsigned char *src, uint64_t len)
 {
     unsigned char *sp = (unsigned char *)src;
     unsigned char *dp = (unsigned char *)dest;
@@ -226,7 +226,7 @@ void memmove(unsigned char *dest, unsigned char *src, unsigned char len)
     }
 }
 
-int memcmp(const unsigned char *src1, const unsigned char *src2, unsigned int len)
+int memcmp(const unsigned char *src1, const unsigned char *src2, uint64_t len)
 {
     const unsigned char *s1 = (const unsigned char *)src1;
     const unsigned char *s2 = (const unsigned char *)src2;

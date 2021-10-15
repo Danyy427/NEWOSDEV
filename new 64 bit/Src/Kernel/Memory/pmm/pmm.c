@@ -7,7 +7,11 @@ uint32_t isPhysicalPageFrameAllocationInitialized;
 void initPhysicalPageFrameAllocation(uint64_t kernelSize)
 {
     physicalPageBitmap.buffer = 0x10000 + (kernelSize * 512) + 0x100;
-    physicalPageBitmap.size = getSystemMemory() / sizeof(uint64_t);
+    uint64_t count = getSystemMemory();
+    count /= 0x1000;
+    count /= 64;
+    count += 1;
+    physicalPageBitmap.size = count;
 
     memset(physicalPageBitmap.buffer, 0, physicalPageBitmap.size);
 

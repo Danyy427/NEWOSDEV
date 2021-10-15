@@ -2,7 +2,7 @@
 
 extern void loadGDT(uint64_t *gdtr);
 
-static gdtEntry_t gdtentries[GDT_SIZE];
+gdtEntry_t gdtentries[GDT_SIZE];
 
 void initGDT()
 {
