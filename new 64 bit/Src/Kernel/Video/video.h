@@ -15,4 +15,10 @@ void fillTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t c);
 void drawCircle(int x, int y, int r, uint32_t c);
 void fillCircle(int x, int y, int r, uint32_t c);
 
+void drawChar(unsigned char c, int x, int y, int fgcolor, int bgcolor);
+void drawCharToCursor(unsigned char c, int fgcolor, int bgcolor);
+void drawString(const char *str, int x, int y, int fgcolor, int bgcolor);
+void drawStringToCursor(const char *str, int fgcolor, int bgcolor);
+void backspace();
+
 #endif

@@ -43,4 +43,6 @@ void memmove(unsigned char *dest, unsigned char *src, uint64_t len);
 
 int memcmp(const unsigned char *src1, const unsigned char *src2, uint64_t len);
 
+char *itoa(uint64_t value, char *buffer, int base);
+
 #endif

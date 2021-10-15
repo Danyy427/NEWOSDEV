@@ -1,6 +1,8 @@
 
 #include "video.h"
 #include "../kmain/kmain.h"
+#include "cursor.h"
+#include "font.h"
 
 void putpixel(uint64_t x, uint64_t y, uint32_t color)
 {
@@ -320,4 +322,101 @@ void fillCircle(int x, int y, int r, uint32_t c)
             drawVLine(x - j, y - i, 2 * i + 1 + delta, c);
         }
     }
+}
+
+unsigned char *font = Default_T_font;
+void drawChar(unsigned char c, int x, int y, int fgcolor, int bgcolor)
+{
+    int cx, cy;
+    int mask[8] = {128, 64, 32, 16, 8, 4, 2, 1};
+    unsigned char *gylph = font + (int)c * 16;
+
+    for (cy = 0; cy < 16; cy++)
+    {
+        for (cx = 0; cx < 8; cx++)
+        {
+            putpixel(x + cx, y + cy - 12, gylph[cy] & mask[cx] ? fgcolor : bgcolor);
+        }
+    }
+}
+
+void drawCharToCursor(unsigned char c, int fgcolor, int bgcolor)
+{
+    if (c == '\n' && getCursorY() <= 1080)
+    {
+        nextLine();
+        return;
+    }
+
+    int x = getCursorX();
+    int y = getCursorY();
+    int cx, cy;
+    int mask[8] = {128, 64, 32, 16, 8, 4, 2, 1};
+    unsigned char *gylph = font + (int)c * 16;
+
+    for (cy = 0; cy < 16; cy++)
+    {
+        for (cx = 0; cx < 8; cx++)
+        {
+            putpixel(x + cx, y + cy - 12, gylph[cy] & mask[cx] ? fgcolor : bgcolor);
+        }
+    }
+    //incrementCursor();
+}
+
+void drawString(const char *str, int x, int y, int fgcolor, int bgcolor)
+{
+    int cursorx = 0;
+    int cursory = 0;
+
+    for (int i = 0; i < strlen(str); i++)
+    {
+
+        if (str[i] == '\n' && cursory <= 1080)
+        {
+            cursorx = 0;
+            cursory += defaultAttr.cheight;
+            continue;
+        }
+
+        drawChar(str[i], x + cursorx, y + cursory, fgcolor, bgcolor);
+
+        cursorx += defaultAttr.cwidth;
+
+        if (cursorx >= kernelInfo.width)
+        {
+            cursorx = 0;
+            cursory += defaultAttr.cheight;
+        }
+    }
+}
+
+void drawStringToCursor(const char *str, int fgcolor, int bgcolor)
+{
+    int x = getCursorX();
+    int y = getCursorY();
+    int cursorx = 0;
+    int cursory = 0;
+
+    for (int i = 0; i < strlen(str); i++)
+    {
+
+        if (str[i] == '\n' && y <= 1080)
+        {
+            nextLine();
+            continue;
+        }
+
+        drawCharToCursor(str[i], fgcolor, bgcolor);
+
+        incrementCursor();
+    }
+}
+
+void backspace()
+{
+
+    if (getCursorX() > 0)
+        setCursor(getCursorX() - 8, getCursorY());
+    drawCharToCursor(' ', 0xffffff, 0x000000);
 }

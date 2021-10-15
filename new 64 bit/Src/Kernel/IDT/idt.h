@@ -3,6 +3,16 @@
 
 #include "../Types/types.h"
 
+#define PIC1_COMMAND 0x20
+#define PIC1_DATA 0x21
+#define PIC2_COMMAND 0xA0
+#define PIC2_DATA 0xA1
+#define PIC_EOI 0x20
+
+#define ICW1_INIT 0x10
+#define ICW1_ICW4 0x01
+#define ICW4_8086 0x01
+
 typedef struct
 {
     uint16_t offset0_15;
@@ -19,15 +29,6 @@ typedef struct
     uint16_t size;
     uint64_t baddr;
 } __attribute__((packed)) idt_t;
-
-typedef enum
-{
-    TASK32 = 0x5,
-    INT16 = 0x8,
-    TRAP16 = 0x7,
-    INT32 = 0xE,
-    TRAP32 = 0xF
-} __attribute__((packed)) gateTypes_t;
 
 typedef struct
 {

@@ -9,6 +9,8 @@
 #include "../Math/math.h"
 #include "../IDT/idt.h"
 #include "../Video/video.h"
+#include "../Video/cursor.h"
+#include "../Printf/printf.h"
 
 kernelInfoStructure_t kernelInfo;
 
@@ -16,16 +18,16 @@ int kmain(kernelInfoStructure_t *infostruct)
 {
 
 	memcpy(&kernelInfo, infostruct, sizeof(kernelInfo));
-
 	initMemoryMap((memoryMap_t *)kernelInfo.memoryMap);
-
 	initPhysicalPageFrameAllocation(kernelInfo.kernelSize);
 	initGDT();
-
 	initPaging();
-
 	initIDT();
-	//putpixel(0, 0, 0xffffffff);
+	initCursor();
+	initDefaultFont();
+
+	char *str = "World";
+	printk("Hello, %s!", str);
 
 	while (1)
 		;
