@@ -1,5 +1,6 @@
 #include "pmm.h"
 #include "../memory.h"
+#include "../../kmain/kmain.h"
 
 bitmap_t physicalPageBitmap;
 uint32_t isPhysicalPageFrameAllocationInitialized;
@@ -16,6 +17,18 @@ void initPhysicalPageFrameAllocation(uint64_t kernelSize)
     memset(physicalPageBitmap.buffer, 0, physicalPageBitmap.size);
 
     isPhysicalPageFrameAllocationInitialized = 1;
+
+    reservePages(0, getSystemMemory() / 0x1000 + 1);
+
+    for (uint64_t i = 0; i < *(uint32_t *)(memoryMapFirstEntry - 4); i++)
+    {
+        if (isMemoryEntryUsable(memoryMapFirstEntry))
+        {
+            memoryEntry_t *entry = (memoryEntry_t *)(memoryMapFirstEntry + (sizeof(memoryEntry_t) * i));
+            unreservePages((void *)entry->addr, entry->length / 0x1000);
+        }
+    }
+
     reservePages(0x0000, 0x100);
 }
 

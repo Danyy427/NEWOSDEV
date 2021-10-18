@@ -36,7 +36,6 @@ void printk(const char *format, ...)
             case 'x':
                 drawStringToCursor(itoa(va_arg(listPointer, uint64_t), buffer, 16), 0xffffff, 0x000000);
                 break;
-
             case '%':
                 drawCharToCursor('%', 0xffffff, 0x000000);
                 incrementCursor();
