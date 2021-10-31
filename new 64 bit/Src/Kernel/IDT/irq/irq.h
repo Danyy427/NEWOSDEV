@@ -4,7 +4,11 @@
 #include "../idt.h"
 
 void default_irq_handler(interrupt_frame_t *frame);
+
+extern uint64_t environmentTickCount;
+
 void irq0_handler(interrupt_frame_t *frame);
+
 void irq1_handler(interrupt_frame_t *frame);
 void irq2_handler(interrupt_frame_t *frame);
 void irq3_handler(interrupt_frame_t *frame);

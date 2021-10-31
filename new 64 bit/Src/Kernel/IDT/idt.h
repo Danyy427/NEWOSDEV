@@ -93,4 +93,6 @@ extern void irq15();
 
 void initIDT();
 
+void dumpRegistersToRAM(interrupt_frame_t *frame, uint64_t *addr);
+
 #endif

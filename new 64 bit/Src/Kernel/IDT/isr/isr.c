@@ -2,90 +2,105 @@
 
 void isr0_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr1_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr2_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr3_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr4_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr5_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr6_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr7_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr8_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr9_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr10_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr11_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr12_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr13_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }
 
 void isr14_handler(interrupt_frame_t *frame)
 {
+    dumpRegistersToRAM(frame, 0x1f000);
     while (1)
         ;
 }

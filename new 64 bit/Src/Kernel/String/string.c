@@ -30,12 +30,20 @@ uint32_t strcmp(char *dest, char *src)
     return *(const unsigned char *)dest - *(const unsigned char *)src;
 }
 
-uint32_t strncmp(char *dest, char *src, size_t n)
+uint32_t strncmp(char *s1, char *s2, size_t n)
 {
-    for (int i = 0; *dest == *src && i < n; ++dest, ++src)
-        if (*dest == 0)
-            return 0;
-    return *(const unsigned char *)dest - *(const unsigned char *)src;
+    unsigned char c1, c2;
+    while (n)
+    {
+        c1 = *s1++;
+        c2 = *s2++;
+        if (c1 != c2)
+            return c1 < c2 ? -1 : 1;
+        if (!c1)
+            break;
+        n--;
+    }
+    return 0;
 }
 
 uint32_t strcasecmp(char *dest, char *src)

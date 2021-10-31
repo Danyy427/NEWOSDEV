@@ -11,7 +11,7 @@ uint32_t strlen(char *str);
 
 uint32_t strcmp(char *dest, char *src);
 
-uint32_t strncmp(char *dest, char *src, size_t n);
+uint32_t strncmp(char *s1, char *s2, size_t n);
 
 uint32_t strcasecmp(char *dest, char *src);
 

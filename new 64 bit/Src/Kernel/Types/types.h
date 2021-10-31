@@ -38,4 +38,6 @@ typedef unsigned long long *ptr64_t;
 
 typedef void *voidptr_t;
 
+typedef int bool;
+
 #endif

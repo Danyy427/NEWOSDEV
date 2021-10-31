@@ -50,7 +50,10 @@ build: compile
 													 $(OBJDIR)/irq.o \
 													 $(OBJDIR)/video.o \
 													 $(OBJDIR)/cursor.o \
-													 $(OBJDIR)/printf.o
+													 $(OBJDIR)/printf.o \
+													 $(OBJDIR)/pit.o \
+										  			 $(OBJDIR)/rtc.o \
+													 $(OBJDIR)/ps2.o 
 
 	x86_64-elf-objcopy -O binary $(BINDIR)/kernel.tmp $(BINDIR)/kernel.bin
 	cat $(BINDIR)/boot.bin $(BINDIR)/kernel.bin > $(BINDIR)/os-image.img
@@ -78,7 +81,10 @@ buildwin: compile
 										  $(OBJDIR)\irq.o \
 										  $(OBJDIR)\video.o \
 										  $(OBJDIR)\cursor.o \
-										  $(OBJDIR)\printf.o
+										  $(OBJDIR)\printf.o \
+										  $(OBJDIR)\pit.o \
+										  $(OBJDIR)\rtc.o \
+										  $(OBJDIR)\ps2.o 
 
 	objcopy -O binary $(BINDIR)\kernel.tmp $(BINDIR)\kernel.bin
 	copy /b $(BINDIR)\boot.bin + $(BINDIR)\kernel.bin /b $(BINDIR)\os-image.img

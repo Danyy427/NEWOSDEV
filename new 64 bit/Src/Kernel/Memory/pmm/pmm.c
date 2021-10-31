@@ -30,6 +30,10 @@ void initPhysicalPageFrameAllocation(uint64_t kernelSize)
     }
 
     reservePages(0x0000, 0x100);
+
+    reservePages((void *)0x10000, ((0x10000 + kernelSize) - 0x10000 + 0x1000) / 0x1000);
+
+    reservePages(physicalPageBitmap.buffer, count * sizeof(uint64_t) / 0x1000 + 1);
 }
 
 void reservePages(uint64_t *address, uint64_t pageCount)

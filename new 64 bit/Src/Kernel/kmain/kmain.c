@@ -11,6 +11,9 @@
 #include "../Video/video.h"
 #include "../Video/cursor.h"
 #include "../Printf/printf.h"
+#include "../Hardware/Timer/PIT/PIT.h"
+#include "../Hardware/Timer/RTC/RTC.h"
+#include "../Hardware/PS2/ps2.h"
 
 kernelInfoStructure_t kernelInfo;
 
@@ -18,6 +21,7 @@ int kmain(kernelInfoStructure_t *infostruct)
 {
 
 	memcpy(&kernelInfo, infostruct, sizeof(kernelInfo));
+
 	initMemoryMap((memoryMap_t *)kernelInfo.memoryMap);
 	initPhysicalPageFrameAllocation(kernelInfo.kernelSize);
 	initGDT();
@@ -25,9 +29,11 @@ int kmain(kernelInfoStructure_t *infostruct)
 	initIDT();
 	initCursor();
 	initDefaultFont();
+	initPIT(100);
+	initRTC(15);
+	uint8_t ps2init = initPS2();
 
-	char *str = "World";
-	printk("Hello, %s!", str);
+	printk("PS2 Initalized, returned with 0x%x", ps2init);
 
 	while (1)
 		;

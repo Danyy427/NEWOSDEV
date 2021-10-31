@@ -127,3 +127,11 @@ void initIDT()
     //int d = 5 / 0;
     asm volatile("sti");
 }
+
+void dumpRegistersToRAM(interrupt_frame_t *frame, uint64_t *addr)
+{
+    for (int i = 0; i < sizeof(interrupt_frame_t); i++)
+    {
+        *addr++ = *((uint64_t *)(frame++));
+    }
+}

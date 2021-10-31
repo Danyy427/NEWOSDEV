@@ -29,7 +29,6 @@ void initPaging()
     }
 
     loadCurrentPML4(kernelPML4);
-
     setAsCurrentPML4(kernelPML4);
 }
 
