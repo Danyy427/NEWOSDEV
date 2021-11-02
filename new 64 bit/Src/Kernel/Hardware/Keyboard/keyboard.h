@@ -4,19 +4,19 @@
 
 #include "../../Types/types.h"
 
-char KeyCodeToScancode8[256];
+extern char KeyCodeToScancode8[256];
 
-char ScancodeToKeyCode8[256];
+extern char ScancodeToKeyCode8[256];
 
-char KeyCodeToScancode16[256];
+extern char KeyCodeToScancode16[256];
 
-char ScancodeToKeyCode16[256];
+extern char ScancodeToKeyCode16[256];
 
-char KeyCodeToASCII8[256];
+extern char KeyCodeToASCII8[256];
 
-char KeyCodeToASCIIShift8[256];
+extern char KeyCodeToASCIIShift8[256];
 
-char KeyPressed[256];
+extern char KeyPressed[256];
 
 enum KeyCodes
 {
@@ -125,5 +125,7 @@ enum KeyCodes
     KEYN0 = 177,
     KEYDOT = 178
 };
+
+uint8_t initKeyboard();
 
 #endif

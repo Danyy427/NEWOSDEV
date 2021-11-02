@@ -6,7 +6,7 @@ uint8_t secondPortDevice[3];
 
 void controllerWait(unsigned char type) //unsigned char
 {
-    int _time_out = 100000; //unsigned int
+    unsigned int _time_out = 100000; //unsigned int
     if (type == 0)
     {
         while (_time_out--) //Data
@@ -161,9 +161,18 @@ uint8_t initPS2()
 
     // Enable devices
 
-    outb(PS2COMMAND, 0xAE);
+    enableFirstPS2Port();
     if (dual == 1)
-        outb(PS2COMMAND, 0xA8);
+        enableSecondPS2Port();
 
-    return 0;
+    writeToFirstPS2Port(0xFF);
+    response = readPS2DataPort();
+    if (response == 0xFC)
+        return 0xFC;
+    writeToSecondPS2Port(0xFF);
+    response = readPS2DataPort();
+    if (response == 0xFC)
+        return 0xFC;
+
+        return 0;
 }

@@ -1,31 +1,31 @@
 #include "keyboard.h"
 #include "../PS2/ps2.h"
 
-uint8_t commandKeyboard(uint8_t byt)
+uint8_t commandKeyboard(unsigned char byt)
 {
 
-    controllerWait(PS2WRITE);
     writeToFirstPS2Port(byt);
-    controllerWait(PS2READ);
     uint8_t response = readPS2DataPort();
 
     if (response == 0xFE)
     {
-        controllerWait(PS2WRITE);
         writeToFirstPS2Port(byt);
-        controllerWait(PS2READ);
         response = readPS2DataPort();
 
         if (response == 0xFE)
         {
-            controllerWait(PS2WRITE);
             writeToFirstPS2Port(byt);
-            controllerWait(PS2READ);
             response = readPS2DataPort();
         }
     }
 
     return response;
+}
+
+uint8_t initKeyboard()
+{
+    uint8_t res = commandKeyboard(0xF4);
+    return res;
 }
 
 char KeyCodeToScancode8[256] =

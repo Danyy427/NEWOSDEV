@@ -21,7 +21,7 @@ void irq0_handler(interrupt_frame_t *frame)
 
 void irq1_handler(interrupt_frame_t *frame)
 {
-
+    inb(0x60);
     default_irq_handler(frame);
 }
 

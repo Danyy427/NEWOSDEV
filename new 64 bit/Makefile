@@ -53,11 +53,12 @@ build: compile
 													 $(OBJDIR)/printf.o \
 													 $(OBJDIR)/pit.o \
 										  			 $(OBJDIR)/rtc.o \
-													 $(OBJDIR)/ps2.o 
+													 $(OBJDIR)/ps2.o  \
+										  			 $(OBJDIR)/keyboard.o
 
 	x86_64-elf-objcopy -O binary $(BINDIR)/kernel.tmp $(BINDIR)/kernel.bin
 	cat $(BINDIR)/boot.bin $(BINDIR)/kernel.bin > $(BINDIR)/os-image.img
-	qemu-system-x86_64 -m 256M -monitor stdio $(BINDIR)/os-image.img
+	qemu-system-x86_64 -m 256M -d int -no-reboot -monitor stdio $(BINDIR)/os-image.img
 	
 buildwin: compile
 	
@@ -84,7 +85,8 @@ buildwin: compile
 										  $(OBJDIR)\printf.o \
 										  $(OBJDIR)\pit.o \
 										  $(OBJDIR)\rtc.o \
-										  $(OBJDIR)\ps2.o 
+										  $(OBJDIR)\ps2.o \
+										  $(OBJDIR)\keyboard.o
 
 	objcopy -O binary $(BINDIR)\kernel.tmp $(BINDIR)\kernel.bin
 	copy /b $(BINDIR)\boot.bin + $(BINDIR)\kernel.bin /b $(BINDIR)\os-image.img

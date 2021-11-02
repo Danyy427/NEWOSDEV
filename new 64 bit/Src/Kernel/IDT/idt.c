@@ -4,6 +4,8 @@
 #include "../Memory/pmm/pmm.h"
 #include "./irq/irq.h"
 #include "../Memory/vmm/paging.h"
+#include "../Hardware/PS2/ps2.h"
+#include "../Hardware/keyboard/keyboard.h"
 
 idt_t currentIDT;
 
@@ -120,6 +122,13 @@ void initIDT()
     init_pic();
 
     idt_flush(&currentIDT);
+
+    uint8_t ps2init = initPS2();
+    printk("PS2 Initalized, returned with 0x%x\n", ps2init);
+    while (1)
+        ;
+    uint8_t keyboardinit = initKeyboard();
+    printk("PS2 Initalized, returned with 0x%x\n", keyboardinit);
 
     outb(PIC1_DATA, 0);
     outb(PIC2_DATA, 0);

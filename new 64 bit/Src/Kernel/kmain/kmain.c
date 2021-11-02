@@ -26,16 +26,12 @@ int kmain(kernelInfoStructure_t *infostruct)
 	initPhysicalPageFrameAllocation(kernelInfo.kernelSize);
 	initGDT();
 	initPaging();
-	initIDT();
 	initCursor();
 	initDefaultFont();
+	printk("%d\n", infostruct->kernelSize);
+	initIDT();
 	initPIT(100);
 	initRTC(15);
-	uint8_t ps2init = initPS2();
 
-	printk("PS2 Initalized, returned with 0x%x", ps2init);
-
-	while (1)
-		;
 	return 0;
 }
