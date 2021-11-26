@@ -125,8 +125,7 @@ void initIDT()
 
     uint8_t ps2init = initPS2();
     printk("PS2 Initalized, returned with 0x%x\n", ps2init);
-    while (1)
-        ;
+
     uint8_t keyboardinit = initKeyboard();
     printk("PS2 Initalized, returned with 0x%x\n", keyboardinit);
 

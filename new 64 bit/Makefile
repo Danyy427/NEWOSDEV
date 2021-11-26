@@ -58,7 +58,7 @@ build: compile
 
 	x86_64-elf-objcopy -O binary $(BINDIR)/kernel.tmp $(BINDIR)/kernel.bin
 	cat $(BINDIR)/boot.bin $(BINDIR)/kernel.bin > $(BINDIR)/os-image.img
-	qemu-system-x86_64 -m 256M -d int -no-reboot -monitor stdio $(BINDIR)/os-image.img
+	qemu-system-x86_64 -m 256M -no-reboot -monitor stdio $(BINDIR)/os-image.img
 	
 buildwin: compile
 	

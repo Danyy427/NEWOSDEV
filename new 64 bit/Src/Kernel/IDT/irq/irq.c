@@ -1,12 +1,14 @@
 #include "irq.h"
 
+#include "../../Hardware/Keyboard/keyboard.h"
+#include "../../Printf/printf.h"
+
 void default_irq_handler(interrupt_frame_t *frame)
 {
     /* If IRQ # on slave PIC send EOI to slave */
-    if (frame->int_no >= 8)
-        outb(0xA0, 0x20);
 
     outb(0x20, 0x20);
+    outb(0xa0, 0x20);
 }
 
 // PIT TIMER
@@ -21,7 +23,9 @@ void irq0_handler(interrupt_frame_t *frame)
 
 void irq1_handler(interrupt_frame_t *frame)
 {
-    inb(0x60);
+    uint8_t abc = inb(0x60);
+    printk("%x", abc);
+
     default_irq_handler(frame);
 }
 

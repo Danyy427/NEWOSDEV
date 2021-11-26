@@ -79,7 +79,7 @@ void commandPS2Controller(unsigned char command)
 void writeToFirstPS2Port(unsigned char byte)
 {
     controllerWait(PS2WRITE);
-    outb(PS2COMMAND, byte);
+    outb(PS2DATA, byte);
 }
 
 void writeToSecondPS2Port(unsigned char byte)
@@ -105,24 +105,31 @@ uint8_t initPS2()
 
     // Flush the input buffer
 
+    controllerWait(PS2READ);
     inb(PS2DATA);
 
     // Set the state of the status register.
-
+    controllerWait(PS2WRITE);
     outb(PS2COMMAND, 0x20);
+    controllerWait(PS2READ);
     uint8_t status = inb(PS2DATA);
     uint8_t dual0 = status & 0b00100000 == 0b00100000; // if dual = 0, there is no second channel
     status |= 0b01000011;
+    controllerWait(PS2WRITE);
     outb(PS2COMMAND, 0x60);
+    controllerWait(PS2WRITE);
     outb(PS2DATA, status);
 
     // Perform self test
-
+    controllerWait(PS2WRITE);
     outb(PS2COMMAND, 0xAA);
+    controllerWait(PS2READ);
     uint8_t response = inb(PS2DATA);
     if (response == 0xFC)
         return 0xFC;
+    controllerWait(PS2WRITE);
     outb(PS2COMMAND, 0x60);
+    controllerWait(PS2WRITE);
     outb(PS2DATA, status);
 
     // test dual channel controller
@@ -130,11 +137,15 @@ uint8_t initPS2()
 
     if (dual0 == 1)
     {
+        controllerWait(PS2WRITE);
         outb(PS2COMMAND, 0xAE);
+        controllerWait(PS2WRITE);
         outb(PS2COMMAND, 0x20);
+        controllerWait(PS2READ);
         status = inb(PS2DATA);
         uint8_t dual1 = status & 0b00100000 == 0b00100000;
         // if dual1 == 0, dual channel exists
+        controllerWait(PS2WRITE);
         outb(PS2COMMAND, 0xAD);
         dual = !dual1;
     }
@@ -144,13 +155,16 @@ uint8_t initPS2()
     }
 
     // Perform interface tests
-
+    controllerWait(PS2WRITE);
     outb(PS2COMMAND, 0xAB);
+    controllerWait(PS2READ);
     uint8_t responseIT1 = inb(PS2DATA);
     uint8_t responseIT2;
     if (dual == 1)
     {
+        controllerWait(PS2WRITE);
         outb(PS2COMMAND, 0xA9);
+        controllerWait(PS2READ);
         responseIT2 = inb(PS2DATA);
     }
 
@@ -169,10 +183,11 @@ uint8_t initPS2()
     response = readPS2DataPort();
     if (response == 0xFC)
         return 0xFC;
+
     writeToSecondPS2Port(0xFF);
     response = readPS2DataPort();
     if (response == 0xFC)
         return 0xFC;
 
-        return 0;
+    return 0;
 }

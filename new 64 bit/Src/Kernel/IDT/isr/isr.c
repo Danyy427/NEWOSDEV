@@ -1,8 +1,12 @@
 #include "isr.h"
 
+#include "../../Hardware/Keyboard/keyboard.h"
+#include "../../Printf/printf.h"
+
 void isr0_handler(interrupt_frame_t *frame)
 {
     dumpRegistersToRAM(frame, 0x1f000);
+
     while (1)
         ;
 }

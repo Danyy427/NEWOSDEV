@@ -36,7 +36,4 @@ enum PS2WRITEREAD
     PS2WRITE
 };
 
-extern uint8_t firstPortDevice[3];
-extern uint8_t secondPortDevice[3];
-
 #endif

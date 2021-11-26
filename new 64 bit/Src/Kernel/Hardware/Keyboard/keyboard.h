@@ -128,4 +128,10 @@ enum KeyCodes
 
 uint8_t initKeyboard();
 
+uint8_t readKeyboard();
+
+unsigned char ScancodeToKeyCode(unsigned char scancode, int e0, int prntscrn, int pause);
+
+unsigned char KeyCodeToASCII(unsigned char KeyCode, int isShift, int isAlt);
+
 #endif

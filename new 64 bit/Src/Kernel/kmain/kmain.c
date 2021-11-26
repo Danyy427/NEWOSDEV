@@ -33,5 +33,6 @@ int kmain(kernelInfoStructure_t *infostruct)
 	initPIT(100);
 	initRTC(15);
 
-	return 0;
+	while (1)
+		;
 }
